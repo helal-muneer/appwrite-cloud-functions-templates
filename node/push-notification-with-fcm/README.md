@@ -1,90 +1,36 @@
 # 🔔 Node.js Push Notifications with FCM Function
 
-Send push notifications to your users using Firebase Cloud Messaging (FCM). This function supports sending notifications to:
-
-- Individual devices (using device token)
-- Multiple devices (using an array of device tokens)
-- Topics (for broadcasting to all devices subscribed to a topic)
-- Conditional targeting (using FCM condition expressions)
+Send push notifications to your users using Firebase Cloud Messaging (FCM).
 
 ## 🧰 Usage
 
 ### POST /
 
-Send a push notification to users using various targeting methods.
+Send a push notification to a user.
 
 **Parameters**
 
-| Name         | Description                                   | Location | Type               | Sample Value   |
-| ------------ | --------------------------------------------- | -------- | ------------------ | -------------- |
-| Content-Type | The content type of the request body          | Header   | `application/json` | N/A            |
-| deviceToken  | FCM device identifier (single device)         | Body     | String             | `642...7cd`    |
-| deviceTokens | Array of FCM device identifiers              | Body     | Array              | `["642...7cd", "abc...xyz"]` |
-| topic        | FCM topic name for broadcasting              | Body     | String             | `news`         |
-| condition    | FCM condition expression                     | Body     | String             | `'news' in topics` |
-| message      | Message to send                               | Body     | Object             | `{"title": "hello","body": "how are you?"}` |
-| data         | Additional data to pass                      | Body     | Object             | `{"greet": "welcome"}` |
+| Name         | Description                          | Location | Type               | Sample Value   |
+| ------------ | ------------------------------------ | -------- | ------------------ | -------------- |
+| Content-Type | The content type of the request body | Header   | `application/json` | N/A            |
+| deviceToken  | FCM device identifier                | Body     | String             | `642...7cd`    |
+| message      | Message to send                      | Body     | Object             | `{"title": "hello","body": "how are you?"}` |
+| data      | Additional data to pass                         | Body     | Object             | `{"greet": "welcome"}` |
 
 **Request**
 
-You must include **one** of the targeting methods (`deviceToken`, `deviceTokens`, `topic`, or `condition`) and the `message` object. The `data` field is optional.
+`deviceToken` and `message` are required. `data` is optional.
 
-**Example 1: Send to a single device**
 
 ```json
 {
     "deviceToken": "642...7cd",
     "message": {
-        "title": "Hello",
-        "body": "How are you?"
+        "title": "hello",
+        "body": "how are you?"
     },
     "data": {
         "greet": "welcome" 
-    }    
-}
-```
-
-**Example 2: Send to multiple devices**
-
-```json
-{
-    "deviceTokens": ["642...7cd", "abc...xyz", "123...def"],
-    "message": {
-        "title": "Group Notification",
-        "body": "This message goes to multiple devices"
-    },
-    "data": {
-        "type": "group_message" 
-    }    
-}
-```
-
-**Example 3: Send to a topic**
-
-```json
-{
-    "topic": "news",
-    "message": {
-        "title": "Breaking News",
-        "body": "Check out the latest updates!"
-    },
-    "data": {
-        "category": "sports" 
-    }    
-}
-```
-
-**Example 4: Send using a condition**
-
-```json
-{
-    "condition": "'sports' in topics || 'news' in topics",
-    "message": {
-        "title": "Sports & News Update",
-        "body": "New content available for sports and news followers"
-    },
-    "data": {
-        "update_type": "content" 
     }    
 }
 ```
